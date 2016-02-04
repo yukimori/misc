@@ -5,6 +5,9 @@
 pythonの役立つ書き方
 ref:
 http://nonbiri-tereka.hatenablog.com/entry/2016/01/25/073521
+future:
+http://kesin.hatenablog.com/entry/2013/05/12/004541
+http://dibtp.hateblo.jp/entry/2014/12/15/232829
 """
 
 print "List"
