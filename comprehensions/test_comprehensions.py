@@ -78,4 +78,25 @@ print extension_gen
 
 print "タプル内包表記"
 print tuple([i for i in range(10)])
-print tuple(i for i in range())
+#print tuple((i for i in range())) # TODO: still error
+
+print "map,filter"
+print "python2系ではmap,filterはリストを返却するのでリスト内包表記と対応する"
+print "python3系ではmap,filaterオブジェクトというイテレータを返却するためジェネレータと対応する"
+print "mapでの書き換え"
+print map(lambda i:i**2, range(1,11))
+
+print "条件演算子を複数つなげる"
+fizzbuzz = []
+for i in range(1,16):
+    if i%15 == 0:
+        fizzbuzz.append("fizzbuzz")
+    elif i%3 == 0:
+        fizzbuzz.append("fizz")
+    elif i%5 == 0:
+        fizzbuzz.append("buzz")
+    else:
+        fizzbuzz.append(i)
+
+["fizzbuzz" if i%15==0 else "fizz" if i%3==0 else "buzz" if i%5==0 else i for i in range(1,16)]
+        
