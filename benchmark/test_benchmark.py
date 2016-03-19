@@ -49,12 +49,15 @@ class FileSplit(object):
                             break
                         frac_file.write(line)
 
-class classifier_logic:
+class ClassifierLogic:
+    def a9a_train(self,datafile):
+        print datafile
+        print "a9a_train not implemented yet."
 
-    def a9a_train():
-        pass
-
-    def iris_train(self,datafile):
+    def iris_train(self, datafile):
+        print datafile
+        print "iris_train not implemented yet."
+        
 
 class Processor(object):
 
@@ -64,33 +67,44 @@ class Processor(object):
             print "{0}:{1}".format((i+1),greeting)
             time.sleep(1)
 
-    
+            
     def execute(self, num, target, args):
         import random
         from multiprocessing import Process, Array
 
         processes = []
         for i in range(num):
-            arg = args + " {0}_process".format(i)
-            print arg
-            processes.append(Process(target=target, args=(arg,)))
+            processes.append(Process(target=target, args=(args,)))
         for process in processes:
             process.start()
         for process in processes:
             process.join()
 
-                        
-def main():
+class Benchmark(object):
 
+    def add_time_decorator(self, logic_obj, logic_func_name):
+        def time_decorator(*args):
+            print args
+            import time
+            start_time = time.clock()
+            #logic_func(*args)
+            logic_func = getattr(logic_obj, logic_func_name)
+            logic_func(*args)
+            end_time = time.clock()
+            print "start:{0} end:{1} elapsed:{2}".format(start_time,end_time,(end_time-start_time))
+        return time_decorator
+        
+    
+    def bench_classifier(self, filepath, parallel):
+        filesplit = FileSplit()
+        filesplit.line_div_av(filepath, parallel) # who should operate file
+
+        import random
+        logic = self.add_time_decorator(ClassifierLogic(), "a9a_train")
+        processor = Processor()
+        processor.execute(parallel, logic, args=("dummpyfilepath"))
+
+if __name__=="__main__":
     filepath = sys.argv[1]
     parallel = int(sys.argv[2])
-    filesplit = FileSplit()
-    filesplit.line_div_av(filepath, parallel)
-
-    import random
-    processor = Processor()
-    processor.execute(parallel, processor.say, args=("Hello"))
-
-                    
-if __name__=="__main__":
-    main()
+    Benchmark().bench_classifier(filepath, parallel)
