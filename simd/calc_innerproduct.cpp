@@ -16,6 +16,13 @@ osakana/stopwatchは非公開ライブライリなので置き換える必要が
 sseの方が時間がかかる
 
 g++ -std=c++11 -Wall calc_innerproduct.cpp -O3 -msse4.2 -o calc_innerproduct
+
+feature:
+計算を以下のように拡大する
+L1距離の計算
+L2距離の計算
+ハミング距離の計算
+http://d.hatena.ne.jp/wosugi/20131208%231386514756
  */
 
 float dot_normal(const float *vec1, const float *vec2, unsigned n)
