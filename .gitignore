@@ -1,0 +1,3 @@
+*.pyc
+a.out
+benchmark/data
