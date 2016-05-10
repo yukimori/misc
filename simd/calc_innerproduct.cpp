@@ -1,11 +1,8 @@
+#include <emmintrin.h>
 #include <iostream>
 #include <iomanip>
-
 #include <random>
 #include <algorithm>
-
-#include <emmintrin.h>
-
 #include <chrono>
 
 /*
@@ -25,13 +22,12 @@ L2距離の計算
 http://d.hatena.ne.jp/wosugi/20131208%231386514756
  */
 
-float dot_normal(const float *vec1, const float *vec2, unsigned n)
-{
-  float sum = 0;
-  for(unsigned i = 0; i < n; ++i) {
-	sum += vec1[i] * vec2[i];
-  }
-  //  std::cout << sum << std::endl;
+float dot_normal(const float *vec1, const float *vec2, unsigned n) {
+    float sum = 0;
+    for (unsigned i = 0; i < n; ++i) {
+        sum += vec1[i] * vec2[i];
+    }
+    //  std::cout << sum << std::endl;
   return sum;
 }
 
@@ -74,8 +70,8 @@ std::chrono::duration<double, Period> stopwatch(F&& func) {
 
 int main()
 {
-  const unsigned len_begin = 8;
-  const unsigned len_end   = 512 * 1024 ;
+    const unsigned len_begin = 8;
+  const unsigned len_end   = 512 * 1024;
   const unsigned len_fact  = 2;
 
   std::mt19937 rng;
@@ -102,7 +98,7 @@ int main()
   	});
   print_result(len, "sse", sse_time.count());
 
-  float sum = 0.0;
+  Float sum = 0.0;
   int N = 100;
   auto time_point = std::chrono::high_resolution_clock::now();
   for (int i=0; i<N; ++i) {
@@ -111,7 +107,6 @@ int main()
   auto duration = std::chrono::high_resolution_clock::now() - time_point;
   auto micros = std::chrono::duration_cast<std::chrono::microseconds>(duration);
   print_result(len, "sse", (micros.count()/N), sum);
-  
 
   time_point = std::chrono::high_resolution_clock::now();
   for (int i=0; i<N; ++i) {

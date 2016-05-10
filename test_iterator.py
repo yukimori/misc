@@ -19,3 +19,4 @@ print iterator.next()
 
 for i in iterator:
     print i
+

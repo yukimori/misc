@@ -20,7 +20,6 @@ def main():
     for process in processes:
         process.join()
 
-if __name__ == "__main__":
-    main()
-            
-        
+if __name__ == '__main__':
+    main()            
+

@@ -5,6 +5,7 @@
 inspectはpythonのcodereadingに役立つ
 """
 
+
 import inspect
 import numpy as np
 import os
@@ -21,5 +22,3 @@ print inspect.getmembers(np, inspect.isclass)
 
 # インストール済みモジュールのソースファイルのローカル環境内格納先パスを表示
 print inspect.getfile(os)
-
-

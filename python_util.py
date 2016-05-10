@@ -10,6 +10,7 @@ http://kesin.hatenablog.com/entry/2013/05/12/004541
 http://dibtp.hateblo.jp/entry/2014/12/15/232829
 """
 
+
 print "List"
 list = [1,2,3,4,5,6]
 

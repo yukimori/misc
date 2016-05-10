@@ -3,6 +3,86 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+
+/**
+   http://ota42y.com/blog/2014/08/05/msgpack/b
+   http://frsyuki.hatenablog.com/entry/20080914/p2
+   g++ -std=c++11 test_msgpack.cpp -lmsgpack -o test_msgpack
+ **/
+
+
+class request_t {
+public:
+    // デシリアライズ用関数
+    void message_unpack(msgpack::type::tuple<
+                        bool,
+                        std::string,
+                        std::vector<int>,
+                        uint32_t> t )
+    {
+        m_is_notify = t.get<0>();
+        m_method = t.get<1>();
+    }
+}
+
+int test_msgpack3() {
+    char data[] = {
+        0x94,
+        0xc3,
+        0xa3,
+        0x67, 0x65, 0x74,
+        0x93,
+        0x1, 0x2, 0x3,
+        0xa
+    };
+
+    // deserialize to msgpack::object
+    msgpack::zone z;
+    msgpack::object obj = msgpack::unpack(data, sizeof(data), z);
+    std::cout << "test: " << obj << std::endl;
+
+    // trainform msgpack::object to static type
+    msgpack::type::tuple<
+        bool,
+        std::string,
+        std::vector<int>,
+        uint32_t> request;
+    msgpack::convert(request, obj);
+
+    // 静的型からシリアライズしてバイト列にする
+    // msgpack::object（タグ付きのunion）からmsgpack::type::tuple<...>という型に変換
+    std::stringstream output;
+    msgpack::pack(output, request);
+
+    // 再度デシリアライズして表示
+    std::string str = output.str();
+    msgpack::object reobj = msgpack::unpack(str.data(), str.size(), z);
+    std::cout << "ok? : " << reobj << std::endl;
+
+    return 0;
+    
+}
+
+
+/*
+int test_msgpack2() {
+    msgpack::type::tuple<int, bool, std::string> src(1, true, "example");
+    // serialize the object into the buffer.
+    // any classes that implements write(const char*, size_t) can be a buffer.
+    std::stringstream buffer;
+    msgpack::pack(buffer, src);
+
+    // send the buffer
+    buffer.seekg(0);
+
+    // deserialize the buffer into msgpack::object instance
+    std::string str(buffer.str());
+
+    msgpack::object_handle oh = msgpack::unpack(str.data(), str.size());
+}
+*/
+
 
 struct User {
     User(std::string name, int id, std::vector<int> follower)
@@ -75,5 +155,6 @@ int test_msgpack1() {
 
 int main(void) {
     test_msgpack1();
+    test_msgpack3();
 }
 
