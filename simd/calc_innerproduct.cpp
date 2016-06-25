@@ -11,6 +11,8 @@ osakana/stopwatchは非公開ライブライリなので置き換える必要が
 
 20160414 動作環境がavx非対応なのでnormalとsseのみ
 sseの方が時間がかかる
+20160610 変数のメモリのアラインメントを修正することでsseが早くなることを確認
+http://kawa0810.hateblo.jp/entry/20120430/1335775256
 
 g++ -std=c++11 -Wall calc_innerproduct.cpp -O3 -msse4.2 -o calc_innerproduct
 
@@ -68,56 +70,56 @@ std::chrono::duration<double, Period> stopwatch(F&& func) {
   
 // }
 
-int main()
-{
+int main() {
     const unsigned len_begin = 8;
-  const unsigned len_end   = 512 * 1024;
-  const unsigned len_fact  = 2;
+    const unsigned len_end   = 512 * 1024;
+    const unsigned len_fact  = 2;
+    
+    std::mt19937 rng;
+    std::uniform_real_distribution<> dst(-1, 1);
 
-  std::mt19937 rng;
-  std::uniform_real_distribution<> dst(-1, 1);
+    typedef std::chrono::duration<double, std::ratio<1, 1000> > Milli;
 
-  typedef std::chrono::duration<double, std::ratio<1, 1000> > Milli ;
+    std::cout << "size,{sse,normal},elapsedtime[ms],sum" << std::endl;
 
-  std::cout << "size,{sse,normal},elapsedtime[ms],sum" << std::endl;
+    for (unsigned len = len_begin; len <= len_end; len *= len_fact) {
+        // SSEで効率的にレジスタに読み込むためメモリを16byte境界にアライメントする
+        float* p1;
+        // 動的にheapに整列したメモリを確保。malloc,newは整列したメモリを確保できない
+        // 引数は 1.メモリの先頭 2.揃えたいメモリアライメント 3.確保したいメモリサイズ
+        posix_memalign(reinterpret_cast<void**>(&p1), 16, (len)*sizeof(float));
+        float* p2;
+        posix_memalign(reinterpret_cast<void**>(&p2), 16, (len)*sizeof(float));
+        float *vec1 = p1;
+        float *vec2 = p2;
 
-  for(unsigned len = len_begin; len <= len_end; len *= len_fact)
-{
-  float* p1;
-  posix_memalign((void**)&p1, 16, (len)*sizeof(float));
-  float* p2;
-  posix_memalign((void**)&p2, 16, (len)*sizeof(float));
-  float *vec1 = p1;
-  float *vec2 = p2;
-
-  std::generate(vec1, vec1+len, [&rng, &dst](){return dst(rng);});
-  std::generate(vec2, vec2+len, [&rng, &dst](){return dst(rng);});
+        std::generate(vec1, vec1+len, [&rng, &dst](){return dst(rng);});
+        std::generate(vec2, vec2+len, [&rng, &dst](){return dst(rng);});
   
-  Milli sse_time = stopwatch([vec1, vec2, len](){
-  	  return dot_sse(vec1, vec2, len);
-  	});
-  print_result(len, "sse", sse_time.count());
+        Milli sse_time = stopwatch([vec1, vec2, len](){
+                return dot_sse(vec1, vec2, len);
+            });
+        print_result(len, "sse", sse_time.count());
 
-  Float sum = 0.0;
-  int N = 100;
-  auto time_point = std::chrono::high_resolution_clock::now();
-  for (int i=0; i<N; ++i) {
-	sum = dot_sse(vec1, vec2, len);
-  }
-  auto duration = std::chrono::high_resolution_clock::now() - time_point;
-  auto micros = std::chrono::duration_cast<std::chrono::microseconds>(duration);
-  print_result(len, "sse", (micros.count()/N), sum);
+        float sum = 0.0;
+        int N = 100;
+        auto time_point = std::chrono::high_resolution_clock::now();
+        for (int i=0; i < N ; ++i) {
+            sum = dot_sse(vec1, vec2, len);
+        }
+        auto duration = std::chrono::high_resolution_clock::now() - time_point;
+        auto micros = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+        print_result(len, "sse", (micros.count()/N), sum);
 
-  time_point = std::chrono::high_resolution_clock::now();
-  for (int i=0; i<N; ++i) {
-	sum = dot_normal(vec1, vec2, len);
-  }
-  duration = std::chrono::high_resolution_clock::now() - time_point;
-  micros = std::chrono::duration_cast<std::chrono::microseconds>(duration);
-  print_result(len, "normal", (micros.count()/N), sum);
+        time_point = std::chrono::high_resolution_clock::now();
+        for (int i=0; i<N; ++i) {
+            sum = dot_normal(vec1, vec2, len);
+        }
+        duration = std::chrono::high_resolution_clock::now() - time_point;
+        micros = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+        print_result(len, "normal", (micros.count()/N), sum);
 
-
-  delete[] p1;
-  delete[] p2;
- }
+        free(p1);
+        free(p2);
+    }
 }
