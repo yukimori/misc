@@ -1,16 +1,14 @@
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
-"""
+/**
 http://qiita.com/go_astrayer/items/5d85565e992487daa618
-
 一部修正しないと動かない
-"""
+**/
 
 using namespace std;
 
-struct Array
-{
+struct Array {
   typedef int ValueType;
 
   ValueType *p;
@@ -19,11 +17,10 @@ struct Array
   // コンストラクタ
   Array(int _length)
     : p(new ValueType[_length])
-    , length(_length)
-  {
-	memset(p, 0, sizeof(ValueType) * length);
-	p[0] = 123;
-	cout << "constructor(" << this << ")" << endl;
+    , length(_length) {
+      memset(p, 0, sizeof(ValueType) * length);
+      p[0] = 123;
+      cout << "constructor(" << this << ")" << endl;
   }
 
   // コピーコンストラクタ
