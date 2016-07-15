@@ -8,6 +8,7 @@
 /**
    http://ota42y.com/blog/2014/08/05/msgpack/b
    http://frsyuki.hatenablog.com/entry/20080914/p2
+   http://frsyuki.hatenablog.com/entry/20100429/p1
    g++ -std=c++11 test_msgpack.cpp -lmsgpack -o test_msgpack
  **/
 
@@ -17,31 +18,51 @@
 class Myclass {
 private:
     std::string m_str;
+    std::string description = "default description";
     std::vector<int> m_vec;
 
 public:
     // 引数なしのコンストラクタがないとエラーになる
     void print_member() {
-        std::cout << m_str << std::endl;
+        std::cout << "print member:" << m_str << std::endl;
+        for ( std::vector<int>::iterator it = m_vec.begin();
+              it != m_vec.end(); ++it ) {
+            std::cout << *it << std::endl;
+        }
+    }
+    void print_member_with_description() {
+        std::cout << "print member:" << m_str << " , "
+                  << description << std::endl;
     }
     Myclass(){
     }
     Myclass(std::string str, int value1) {
         m_str = str;
         m_vec.push_back(value1);
+        description = "changed";
     }
     ~Myclass(){ }
-    MSGPACK_DEFINE(m_str, m_vec);
+
+    // ユーザ定義クラスをmsgpack::objectに変換するために
+    // 保存したいクラスのメンバ変数をMSGPACK_DEFINEマクロに指定する
+    MSGPACK_DEFINE(m_str, m_vec, description);
 };
 
 int test_msgpack5() {
     std::vector<Myclass> vec;
-    vec.push_back(Myclass("test Myclass name", 14));
+    vec.push_back(Myclass("1st Myclass name", 14));
+    vec.push_back(Myclass("2nd Myclass name", 30));
 
     // Myclassをシリアライズする
     msgpack::sbuffer sbuf;
     msgpack::pack(sbuf, vec);
 
+    // バイナリをファイルに保存する
+    std::ofstream myFile("test_msg.bin", std::ios::out | std::ios::binary);
+    myFile.write(sbuf.data(), sbuf.size());
+    myFile.close();
+
+    // sbufをデシリアライズする
     msgpack::unpacked msg;
     msgpack::unpack(&msg, sbuf.data(), sbuf.size());
 
@@ -52,6 +73,8 @@ int test_msgpack5() {
     obj.convert(&rvec);
 
     rvec[0].print_member();
+    rvec[0].print_member_with_description();
+    rvec[1].print_member();
 }
 
 /*
@@ -136,23 +159,31 @@ int test_msgpack3() {
         0xa
     };
 
+    std::cout << "test_msgpack3 : " << std::endl;
     // deserialize to msgpack::object
     msgpack::zone z;
+    // デシリアライズされたオブジェクトはmsgpack::object型になる
     msgpack::object obj = msgpack::unpack(data, sizeof(data), z);
     std::cout << "test: " << obj << std::endl;
 
     // trainform msgpack::object to static type
+    // msgpack::object（タグ付きのunion）から静的型に変換する
+    // msgpack::type::tupleはboost::tupleと同じような感じで使える
     msgpack::type::tuple<
         bool,
         std::string,
         std::vector<int>,
         uint32_t> request;
     msgpack::convert(request, obj);
+    std::cout << request.get<0>() << std::endl;
+    std::cout << request.get<1>() << std::endl;
+    std::cout << request.get<3>() << std::endl;
 
     // 静的型からシリアライズしてバイト列にする
     // msgpack::object（タグ付きのunion）からmsgpack::type::tuple<...>という型に変換
     std::stringstream output;
     msgpack::pack(output, request);
+    std::cout << output << std::endl;
 
     // 再度デシリアライズして表示
     std::string str = output.str();
@@ -160,7 +191,6 @@ int test_msgpack3() {
     std::cout << "ok? : " << reobj << std::endl;
 
     return 0;
-    
 }
 
 
@@ -257,4 +287,3 @@ int main(void) {
     test_msgpack3();
     test_msgpack5();
 }
-
