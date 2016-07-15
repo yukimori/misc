@@ -8,7 +8,6 @@ import os.path
 DIV_FILE_TEMPLATE = ".frac.{0}"
 
 class Dataset(object):
-    
     def generate_3classification(self, num_incluster=50, save_file="3classification.dat"):
         import numpy as np
         import matplotlib.pylab as plt

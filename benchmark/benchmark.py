@@ -77,7 +77,8 @@ class Benchmark(object):
         import time
         print "start classifier benchmark"
         dataset = Dataset()
-        frac_files = dataset.line_div_av(filepath, parallel) # [TODO]who should operate file
+        # [TODO]which class should operate file
+        frac_files = dataset.line_div_av(filepath, parallel)
         print frac_files
         import random
         queue = Queue()
@@ -113,7 +114,8 @@ def parse_args():
     p.add_option('--name', action='store',
                  dest='name', type='string', default='benchmark')
     p.add_option('-c', '--case', action="store",
-                 dest='case', type='string', default='classifier_3clusters_2dim')
+                 dest='case', type='string', default='classifier_3clusters_2dim',
+                     help="select testcase.default=classifier_3clusters_2dim.you can select")
     p.add_option('-p', '--process', action="store",
                  dest='process', type='int', default="1")
     p.add_option('-n','--num', action="store",
@@ -126,8 +128,6 @@ def parse_args():
             
 if __name__=="__main__":
     options, remainder = parse_args()
-    filepath = sys.argv[1]
-    parallel = int(sys.argv[2])
     dataset = Dataset()
     dataset.generate_3classification(options.datanum,save_file=options.testdata_path)
     bench = Benchmark()
