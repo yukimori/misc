@@ -1,4 +1,8 @@
-#include <stdio.h>
+#include <stdint.h>
+
+int dummy(uint32_t x) {
+    return 0;
+}
 
 /**
    1byteあたり8回条件分岐してbitを数える
@@ -15,13 +19,11 @@ int popcount8if(unsigned int x) {
         if(((unsigned char*)&x)[i] & 0x20) c++;
         if(((unsigned char*)&x)[i] & 0x40) c++;
         if(((unsigned char*)&x)[i] & 0x80) c++;
-        x++;
     }
     return c;
 }
 
-int numofbits1(int bits)
-{
+int numofbits1(int bits) {
     int num  = 0;
     int mask = 1;
 
@@ -29,10 +31,12 @@ int numofbits1(int bits)
         if (bits & mask )
             num++;
     }
-
     return num;
 }
 
+/**
+   256byteのテーブルを作成して表引き
+ **/
 const int BITS_COUNT_TABLE[256] = {
     0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
     1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
@@ -52,8 +56,7 @@ const int BITS_COUNT_TABLE[256] = {
     4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8,
 };
 
-int numofbits2(int bits)
-{
+int numofbits2(int bits) {
     int num  = 0;
 
     for (int i=0 ; i<sizeof(bits) ; i++ ) {
@@ -63,8 +66,28 @@ int numofbits2(int bits)
     return num;
 }
 
-int numofbits3(int bits)
-{
+static char pop_table16bit[256 * 256];
+void _popcount_16bit_table_init(void) {
+    for(int i=0; i<256; i++) {
+        for(int j=0; j<256; j++){
+            pop_table16bit[i*256 + j] = BITS_COUNT_TABLE[i] + BITS_COUNT_TABLE[j];
+        }
+    }
+}
+int popcount_16bit_table(int bits) {
+    int num = 0;
+    /* _popcount_16bit_table_init(); */
+    /* for(int i=0; i<256; i++) { */
+    /*     printf("%d ",pop_table16bit[i]); */
+    /* } */
+    /* printf("\n"); */
+    for(int i=0; i<(sizeof(bits)/2); i++){
+        num += pop_table16bit[((unsigned short*)&bits)[i]];
+    }
+    return num;
+}
+
+int numofbits3(int bits) {
     int num  = 0;
 
     for ( ; bits != 0 ; bits &= bits - 1 ) {
