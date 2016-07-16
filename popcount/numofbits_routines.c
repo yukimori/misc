@@ -1,4 +1,11 @@
 #include <stdint.h>
+#include "immintrin.h"
+
+/**
+   ref:
+   http://www.nminoru.jp/~nminoru/programming/bitcount.html
+   http://www.slideshare.net/takesako/x86x64-sse42-popcnt
+ **/
 
 int dummy(uint32_t x) {
     return 0;
@@ -115,4 +122,18 @@ int numofbits5(long bits)
     bits = (bits & 0x0f0f0f0f) + (bits >> 4 & 0x0f0f0f0f);
     bits = (bits & 0x00ff00ff) + (bits >> 8 & 0x00ff00ff);
     return (bits & 0x0000ffff) + (bits >>16 & 0x0000ffff);
+}
+/**
+   inline assemblar
+   http://d.hatena.ne.jp/wocota/20090628/1246188338
+ **/
+int popcnt(uint32_t bits) {
+    int ret;
+    __asm__ ("popcntl %[input], %[output]" : [output] "=r"(ret) : [input] "r"(bits));
+    return ret;
+}
+
+unsigned int popcount_32bitsse42(uint32_t bits) {
+    int c = _mm_popcnt_u32(bits);
+    return c;
 }
