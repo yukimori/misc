@@ -1,3 +1,5 @@
+
+#include <stdio.h>
 #include <stdint.h>
 #include "immintrin.h"
 
@@ -131,6 +133,14 @@ int popcnt(uint32_t bits) {
     int ret;
     __asm__ ("popcntl %[input], %[output]" : [output] "=r"(ret) : [input] "r"(bits));
     return ret;
+}
+
+unsigned int popcount_64bitsse42(uint32_t bits1, uint32_t bits2) {
+    uint64_t bits = (uint64_t)bits1 << 32;
+    bits += bits2;
+    //    printf("%x + %x = %llx\n",bits1,bits2,bits);
+    int c = _mm_popcnt_u64(bits);
+    return c;
 }
 
 unsigned int popcount_32bitsse42(uint32_t bits) {
