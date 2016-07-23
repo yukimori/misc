@@ -11,9 +11,23 @@ ref:
 http://d.hatena.ne.jp/ux00ff/20110919/1316415417
 """
 
+def log(message):
+    print message
+
+def dump(obj):
+    if type(obj) == dict:
+        for k in obj:
+            log("%30s | %s" %(k, obj[k]))
+    else:
+        log(obj)
+
 def application(env, res):
     res("200 OK", [("Content-type", "text/plain")])
-    return "Hello wsgi application\n"
+    dump("env")
+    dump(env)
+    dump("res")
+    dump(res)
+    return "Empty\n"
 
 from wsgiref import simple_server
 
