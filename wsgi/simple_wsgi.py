@@ -27,7 +27,7 @@ def application(env, res):
     dump(env)
     dump("res")
     dump(res)
-    return "Empty\n"
+    return ["first\n","second\n","third\n"]
 
 from wsgiref import simple_server
 
