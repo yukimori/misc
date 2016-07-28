@@ -1,3 +1,4 @@
+# Result:calc_innerproduct
 size,{sse,normal},elapsedtime[ms],sum
            8,   sse,     0.00019,         0
            8,   sse,           0,  -0.57812
@@ -50,3 +51,8 @@ size,{sse,normal},elapsedtime[ms],sum
       524288,   sse,    0.073052,         0
       524288,   sse,         172,   312.416
       524288,normal,         474,   312.422
+
+# Result:calc_euclid_distance
+ほとんど変わらない（sseの処理がおかしい？）
+normal elapsed time = 32.585665
+sse    elapsed time = 28.480349
