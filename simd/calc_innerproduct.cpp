@@ -95,11 +95,12 @@ int main() {
 
         std::generate(vec1, vec1+len, [&rng, &dst](){return dst(rng);});
         std::generate(vec2, vec2+len, [&rng, &dst](){return dst(rng);});
-  
+
+        // stopwatchでは指定した関数を1回しか実施できない
         Milli sse_time = stopwatch([vec1, vec2, len](){
                 return dot_sse(vec1, vec2, len);
             });
-        print_result(len, "sse", sse_time.count());
+        // print_result(len, "sse", sse_time.count());
 
         float sum = 0.0;
         int N = 100;
