@@ -1,3 +1,7 @@
+# build
+-msse4.2が必要
+ex) g++ -std=c++11 -msse4.2 test_sse_simple.cpp
+
 # Result:calc_innerproduct
 size,{sse,normal},elapsedtime[ms],sum
            8,   sse,     0.00019,         0
