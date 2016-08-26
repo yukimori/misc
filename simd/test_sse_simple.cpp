@@ -76,7 +76,7 @@ void examin_loadstore() {
     // http://stackoverflow.com/questions/22440536/sse-sum-of-unsigned-long-long-array
     //    __m128i* pa = reinterpret_cast<__m128i *>(IntHoge);
     IntAcc = _mm_load_si128(reinterpret_cast<__m128i*>(&IntHoge));
-    _mm_store_si128(reinterpret_cast<__m128i*>(&IntPiyo), IntAcc);
+    _mm_store_si128(reinterpret_cast<__m128i*>(IntPiyo), IntAcc);
     
         //結果を確認
     for(int i=0; i<4; ++i){
