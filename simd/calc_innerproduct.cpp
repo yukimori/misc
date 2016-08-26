@@ -9,8 +9,7 @@
 http://daily.belltail.jp/?p=1520
 osakana/stopwatchは非公開ライブライリなので置き換える必要がある
 
-20160414 動作環境がavx非対応なのでnormalとsseのみ
-sseの方が時間がかかる
+20160414 動作環境がavx非対応なのでnormalとsseのみ．sseの方が時間がかかる
 20160610 変数のメモリのアラインメントを修正することでsseが早くなることを確認
 http://kawa0810.hateblo.jp/entry/20120430/1335775256
 
@@ -24,6 +23,10 @@ L2距離の計算
 http://d.hatena.ne.jp/wosugi/20131208%231386514756
  */
 
+/**
+   シンプルな内積計算
+   2つのベクトル間の要素同士を乗算して加算する
+ **/
 float dot_normal(const float *vec1, const float *vec2, unsigned n) {
     float sum = 0;
     for (unsigned i = 0; i < n; ++i) {
@@ -33,17 +36,18 @@ float dot_normal(const float *vec1, const float *vec2, unsigned n) {
   return sum;
 }
 
-float dot_sse(const float *vec1, const float *vec2, unsigned n)
-{
+/**
+   sseを使った内積計算
+ **/
+float dot_sse(const float *vec1, const float *vec2, unsigned n) {
   __m128 u = {0};
-  for (unsigned i = 0; i < n; i += 4)
-	{
-	  __m128 w = _mm_load_ps(&vec1[i]);
-	  __m128 x = _mm_load_ps(&vec2[i]);
-
-	  x = _mm_mul_ps(w, x);
-	  u = _mm_add_ps(u, x);
-	}
+  for (unsigned i = 0; i < n; i += 4) {
+      __m128 w = _mm_load_ps(&vec1[i]);
+      __m128 x = _mm_load_ps(&vec2[i]);
+      
+      x = _mm_mul_ps(w, x);
+      u = _mm_add_ps(u, x);
+  }
   __attribute__((aligned(16))) float t[4] = {0};
   _mm_store_ps(t, u);
   float sum = t[0] + t[1] + t[2] + t[3];
