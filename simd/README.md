@@ -1,6 +1,7 @@
 # build
 -msse4.2が必要
-ex) g++ -std=c++11 -msse4.2 test_sse_simple.cpp
+g++ -std=c++11 -msse4.2 test_sse_simple.cpp
+g++ -std=c++11 -Wall calc_innerproduct.cpp -O3 -msse4.2 -o calc_innerproduct
 
 # Result:calc_innerproduct
 size,{sse,normal},elapsedtime[ms],sum
