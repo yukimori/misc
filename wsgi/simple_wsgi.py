@@ -11,6 +11,7 @@ ref:
 http://d.hatena.ne.jp/ux00ff/20110919/1316415417
 """
 
+
 def log(message):
     print message
 
@@ -23,10 +24,10 @@ def dump(obj):
 
 def application(env, res):
     res("200 OK", [("Content-type", "text/plain")])
-    dump("env")
-    dump(env)
-    dump("res")
-    dump(res)
+    # dump("env")
+    # dump(env)
+    # dump("res")
+    # dump(res)
     return ["first\n","second\n","third\n"]
 
 from wsgiref import simple_server
@@ -34,12 +35,3 @@ from wsgiref import simple_server
 if __name__ == "__main__":
     sv = simple_server.make_server("", 8080, application)
     sv.serve_forever()
-
-
-
-
-
-
-
-
-
