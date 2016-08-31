@@ -3,10 +3,10 @@
 int main() {
     int a = 0;
 
-    /* constポインタ */
+    // ポインタをconstで宣言する
     const int* b = &a;
-    // int const* b = &a;  // 上の行と同義
-    // *b = 1;  //エラー bはconst intへのポインタ
+    int const* b = &a;  // 上の行と同義
+    // *b = 1;  //error bはconst intへのポインタなので、ポインタの示す先をconstにする
 
     // ポインタオブジェクトで保持するアドレスを不変にしたい場合
     // bのアドレスが不変
