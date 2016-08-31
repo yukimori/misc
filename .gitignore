@@ -6,3 +6,9 @@ GPATH
 GRTAGS
 GTAGS
 *.o
+
+.DS_Store
+googletest/
+popcount/bit_knn/
+popcount/numofbits_test.c
+visualization/
