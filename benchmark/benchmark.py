@@ -115,7 +115,7 @@ def parse_args():
                  dest='name', type='string', default='benchmark')
     p.add_option('-c', '--case', action="store",
                  dest='case', type='string', default='classifier_3clusters_2dim',
-                     help="select testcase.default=classifier_3clusters_2dim.you can select")
+                     help="select testcase. (default=classifier_3clusters_2dim.you can select)")
     p.add_option('-p', '--process', action="store",
                  dest='process', type='int', default="1")
     p.add_option('-n','--num', action="store",
