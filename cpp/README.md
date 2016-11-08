@@ -42,3 +42,8 @@ int main() {
     std::cout << "CONST_H_PB:" << tv.CONST_H_PB << std::endl;
 
 }
+
+# #2 enumハック
+コンパイル時にクラスの定数が必要になった場合に使うテクニック
+enum型の値がintとしても使えることを利用
+effectivecpp.{hpp,cpp}を参照のこと
