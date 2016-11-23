@@ -5,8 +5,8 @@ benchmark/data
 GPATH
 GRTAGS
 GTAGS
+shunit2_demo-master
 *.o
-
 .DS_Store
 googletest/
 popcount/bit_knn/

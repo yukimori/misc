@@ -24,3 +24,10 @@ Unicode文字をバイナリデータに変換するにはencodeメソッドを�
 
 プログラムの核心ではUnicode文字型(python2:unicode, python3:str)を使い、
 文字の符号化については仮定してはいけない
+
+# リスト内包表記
+test_listcomprehension.pyにてリスト内包表記のテストを作成
+
+## ジェネレータ式の生成
+メモリ不足を回避するためにリスト内包表記でジェネレータ式を生成する方法をtest_generator.pyでテスト
+
