@@ -1,6 +1,17 @@
 # install
 http://qiita.com/kagutitan/items/57c829a1afb6b64ec65b
+https://blog.ymyzk.com/2015/07/os-x-opencv-3-python-2-3/
+ こちらの方が参考になるかも
+ 
+scienceリポジトリにあるのでtapする必要がある
+$ brew search opencv
+homebrew/science/opencv    homebrew/science/opencv3
+$ brew tap homebrew/science
+
 brew install opencv3 --HEAD --with-python3
+ # pip install numpy --with-python3でpython3を使ってnumpyをインストールしておくこと
+   システムデフォルトのpython2を使ってnumpyをインストールしていると
+   opencv3時に--with-python3を指定してもpython2の共有オブジェクトしか作成されないので注意する
 
 macでは
 QTkitがないとエラーになるので--HEADで対処版をインストールする
