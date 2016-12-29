@@ -16,4 +16,5 @@ class testvector {
     int scores[NumTurns];
 };
 
+
 }  // namespace my
