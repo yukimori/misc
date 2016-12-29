@@ -25,7 +25,8 @@ class ClassifierLogic:
         df = pd.read_csv(datafile, names=('x', 'y', 'label'))
         for ix, row in df.iterrows():
             client.train([(str(row['label']), Datum({'x':row['x'], 'y':row['y']}))])
-        self.query_num = ix
+            # print "ix:{0}".format(ix)
+        self.query_num = ix+1
         self.query_type = "2dim_classifier_train"
 
     def a9a_train(self,datafile):
@@ -65,6 +66,7 @@ class Benchmark(object):
             end_time = time.time()
             import os
             print "{3}:start:{0} end:{1} elapsed:{2}".format(start_time,end_time,(end_time-start_time),os.getpid())
+            print ""
             num = getattr(logic_obj, "query_num")
             query_type = getattr(logic_obj, "query_type")
             res = {"start":start_time, "end":end_time, "elapsed":(end_time-start_time),
@@ -96,13 +98,15 @@ class Benchmark(object):
     def report(self, result, prallel,savefilepath="repot.dat"):
         num = []
         query_type = []
+        start = []
+        end = []
         for i in xrange(prallel):
-            print result.get()
-            # num.append(result.get()["num"])
-            # query_type.append(result.get()["query_type"])
-            # print num
-            # print query_type
-        
+            res = result.get()
+            query_type.append(res["query_type"])
+            num.append(res["num"])
+            start.append(res["start"])
+            end.append(res["end"])
+        print "# query_type:{0}".format()
 
 def parse_args():
     from optparse import OptionParser, OptionValueError
