@@ -1,3 +1,6 @@
+# ref
+http://aidiary.hatenablog.com/entry/20150518/1431954329
+
 # y = x**2の計算
 http://aidiary.hatenablog.com/entry/20150509/1431137590
 
