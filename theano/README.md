@@ -24,6 +24,9 @@ GPUにのせるデータ型はtheadno.config.floatX型にする必要がある
 勾配降下法ではパラメータの更新式にコスト関数（誤差関数）Eの微分が必要
 自動微分ではコスト関数とどの変数を微分するか指定すると自動的に微分を計算する
 
+test_theano02.pyに実装
+ref:http://aidiary.hatenablog.com/entry/20150518/1431954329
+
 # theano install
 el capitainのデフォルトのpythonのバージョンでは
 theanoをインストールするために
