@@ -15,7 +15,15 @@ testvector::testvector() {
     std::cout << "CONST_H_PV:" << CONST_H_PV << std::endl;
 }
 
+
 }  // namespace my
+
+// defineでマクロを定義する代わりにテンプレートを使ってインライン関数を記述する
+template<typename T>
+inline T squreMultiWithInline(const T& a, const T&b) {
+    return a * a * b;
+}
+
 
 int main() {
 
@@ -45,14 +53,18 @@ int main() {
     std::cout << "show effective.hpp" << std::endl;
 
     std::cout << "#2 defineの罠" << std::endl;
-    int a = 5;
+    int a1 = 5, a2 = 5, a3 = 5;
     int b = 10;
-    std::cout << "Expected:" << (++a*a*b) << std::endl;
-    std::cout << "Actual:" << SquareMulti(++a, b) << std::endl;
+    std::cout << "Expected:" << (++a1*a1*b) << std::endl;
+    std::cout << "definel:" << SquareMulti(++a2, b) << std::endl;
+    std::cout << "inline:" << squreMultiWithInline(++a3, b) << std::endl;
     std::cout
             << "マクロは置き換えるだけなのでxが++aになってしまい、"
             << "++aが2回実行されてしまう"
             << std::endl;
+    std::cout << "inline関数を使うとdefineと同様に"
+              << "関数呼び出しのオーバーで安全に使える"
+              << std::endl;
 
     return 0;
 }
