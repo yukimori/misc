@@ -1,6 +1,8 @@
+# -*- coding:utf-8 -*-
 
 from __future__ import print_function
 import chainer
+import chainer.functions as F
 import numpy as np
 
 # 変数の宣言
@@ -32,6 +34,12 @@ y = x**2 - 2*x + 1
 y.grad = np.ones((2,3), dtype=np.float32)
 y.backward()
 print("x.grad")
+print(x.grad)
+
+x = chainer.Variable(np.array([-1, 0, 1], dtype=np.float32))
+z = F.sin(x)
+z.grad = np.array([3, 1, 1], dtype=np.float32)
+z.backward()
 print(x.grad)
 
 # NNモデル
