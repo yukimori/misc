@@ -1,3 +1,8 @@
+# nose
+test_nose.pyにてテスト
+公式サイトを参考に~/.nosercにて詳細オプションを指定
+ref:http://nose.readthedocs.io/en/latest/usage.html
+
 # bytes, str, unicode
 ref:
  http://qiita.com/FGtatsuro/items/cf178bc44ce7b068d233
