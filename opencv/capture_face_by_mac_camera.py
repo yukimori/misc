@@ -11,9 +11,12 @@ if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
 
     # OpenCVに用意されている顔認識するためのxmlファイルのパス
+    # 環境によって修正する必要あり
     # cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
-    # macbookproではファイルが存在しているパスが異なったため修正
-    cascade_path = "/usr/local/Cellar/opencv3/HEAD-4fd00c1_4/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+    # macbookpro
+    # cascade_path = "/usr/local/Cellar/opencv3/HEAD-4fd00c1_4/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+    # macbook
+    cascade_path = "/usr/local/Cellar/opencv3/3.2.0/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
     # カスケード分類器の特徴量を取得する
     cascade = cv2.CascadeClassifier(cascade_path)
 
