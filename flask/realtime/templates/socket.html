@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block script %}
+<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        namespace = '/demo'; //main.pyで指定したnamespace
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+        //カウントはこちらで受信。main.py側からmy_count宛に送られたデータを受け取る
+        socket.on('my_count', function(msg) {
+            $('.count').empty(); // <div class="count"></div>の中身を消し去ります。
+            $('.count').append().html(msg.data); // <div class="count"></div>内に、受け取ったdataをhtmlで挿入します。
+        });
+
+        //テキストエリアはこちらで受信。main.py側からmy_content宛に送られたデータを受け取る
+        socket.on('my_content', function(msg) {
+            $('#place').append(msg.data); // <div id="place"></div>内に、受け取ったdataを挿入します。
+        });
+
+        //htmlのフォームがsubmitされた時に、main.pyのreceive_content宛にテキストエリアのid="input_data"の値を送信します。
+        $('form#send_content').submit(function(event) {
+            socket.emit('receive_content', {data: $('#input_data').val()});
+            return false; //この意味はわからん
+        });
+
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="count"></div>
+<form id="send_content" method="POST" action='#'>
+    <input type="text" name="input_data" id="input_data" placeholder="Input content!">
+    <input type="submit" value="送信">
+</form>
+<div id="place"></div>
+{% endblock %}
