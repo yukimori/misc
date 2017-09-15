@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+	<meta charset="utf-8">
+	<title>jQueryのテスト</title>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<script>
+	 jQuery(function ($) {
+     $("#color_div").css("border", "1px solid red");
+   });
+
+	 jQuery(function ($) {
+     $("<li>saburo</li>").appendTo("#family");
+   });
+
+   var ele = document.getElementById("div1");
+   var div1 = $(ele);
+   var w1 = $(window).width();
+   // エラーになる
+   // var w2 = $(document).width();
+	</script>
+  </head>
+  <body>
+	<div id="color_div">ここのDIVの枠線を変更</div>
+	<ul id="family">
+	  <li>taro</li>
+	  <li>jiro</li>
+	</ul>
+  </body>
+</html>
