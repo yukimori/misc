@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block script %}{% endblock %}
+
+{% block body %}
+<a href="/websocket">リアルタイム通信へ</a>
+
+<!-- main.pyのrequest.form['single']に届きます -->
+<form class="" action="/" method="post">
+  <input type="text" name="single" value="あいうえお" placeholder="テキスト">
+  <input type="submit" name="" value="テキストで送信">
+</form>
+
+<!-- main.pyのrequest.form.getlist('list')に届きます -->
+<form class="" action="/" method="post">
+  <input type="checkbox" name="list" value="かきくけこ" placeholder="テキスト">かきくけこ
+  <input type="checkbox" name="list" value="さしすせそ" placeholder="テキスト">さしすせそ
+  <input type="submit" name="" value="リストで送信">
+</form>
+
+<!-- html内for文例。value_listがあれば表示されます -->
+{% for v in value_list %}
+<li>{{ v }}</li>
+{% endfor %}
+
+<!-- html内if文例。value_singleを受け取れば表示されます -->
+{% if value_single %}
+<li>{{ value_single }}</li>
+{% endif %}
+
+{% endblock %}
