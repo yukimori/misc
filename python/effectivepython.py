@@ -3,9 +3,6 @@
 
 from __future__ import print_function
 
-
-
-
 def normalize(numbers):
     total = sum(numbers)
     result = []
@@ -129,5 +126,3 @@ if __name__ == '__main__':
 
     result = list(index_words_iter(address))
     print("ジェネレータを使う {0}".format(result))
-
-
